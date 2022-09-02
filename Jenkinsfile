@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent {label agent1}
   stages {
     stage('BUILD') {
       steps {
@@ -24,8 +24,7 @@ pipeline {
 
     stage('DEPLOY') {
       steps {
-        sh 'rm -r /var/lib/tomcat9/webapps/spark*'
-        sh 'cp target/*.war /var/lib/tomcat9/webapps/'
+        deploy adapters: [tomcat9(credentialsId: '25593935-165d-49ac-a307-78949337d4ef', path: '', url: 'http://172.17.0.2:8080/')], contextPath: '/spark', war: 'target/*.war'
       }
     }
 
